@@ -6,14 +6,25 @@ class Robot:
         self.ID = ID
         self.teams = teams
         self.schedule = schedule
-        self.data = {}
+        self.sensor_data = {}
+        self.eigen_data = {}
 
-    def add_new_data(self, new_data, time):
+    def add_new_data(self, new_data, time, data_type):
         t_start, t_end = time
-        self.data[(t_start, t_end, self.ID)] = new_data
+        if data_type == 'sensor':
+            self.sensor_data[(t_start, t_end, self.ID)] = new_data
+        else:
+            self.eigen_data[(t_start, t_end, self.ID)] = new_data
 
-    def get_data_from_robots(self, new_data):
-        self.data = {**self.data, **new_data}
+    def get_data_from_robots(self, new_data, data_type):
+        if data_type == 'sensor':
+            self.sensor_data = {**self.sensor_data, **new_data}
+        else:
+            self.eigen_data = {**self.eigen_data, **new_data}
+
+    def construct_data_matrix(self):
+        return None
+
 
 
 class Schedule:
