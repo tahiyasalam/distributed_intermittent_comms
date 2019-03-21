@@ -24,7 +24,7 @@ if __name__ == "__main__":
 
     robots = []
     for r in range(0, num_robots):
-        teams = np.where(rob_in_teams[r,:] > 0)[0].astype('int')
+        teams = np.where(rob_in_teams[r, :] > 0)[0].astype('int')
         teams = teams + np.ones(np.shape(teams))
         rob = Robot(r + 1, teams, S[r])
         robots.append(rob)
@@ -36,8 +36,9 @@ if __name__ == "__main__":
             robots[r].add_new_data([data_val] * sensor_data_period, (curr_time, curr_time + sensor_data_period), 'sensor')
         curr_time += sensor_data_period
 
-        # Use communication protocol here
-
+        # Create new matrix of data points, fill in sensor values
+        #
+        # Estimate missing values using communication protocol here
         # Collect and send eigenvector data
         for r in range(0, num_robots):
             robots[r].add_new_data([data_val * 3] * sensor_data_period, (curr_time, curr_time + eigenvec_data_period), 'eigen')
