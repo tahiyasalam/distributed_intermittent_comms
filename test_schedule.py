@@ -11,7 +11,6 @@ if __name__ == "__main__":
     T = schedule.create_teams()
 
     S = schedule.create_schedule()
-    S = np.array([[1, 4, 0, 0], [1, 5, 0, 0], [2, 4, 3, 0], [2, 6, 8, 0], [2, 5, 0, 7], [9, 5, 3, 0], [9, 12, 10, 0], [0, 0, 10, 11], [1, 0, 8, 7], [9, 12, 0, 11], [0, 5, 10, 11], [0, 6, 8,11]])
 
     communication_period = np.shape(S)[0] # Communication schedule repeats infinitely often
 

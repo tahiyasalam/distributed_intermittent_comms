@@ -23,8 +23,13 @@ class Robot:
             self.eigen_data = {**self.eigen_data, **new_data}
 
     def construct_data_matrix(self):
-        return None
+        from operator import itemgetter
 
+        # Find end time of data matrix
+        keys = self.sensor_data.keys()
+        max_t = max(keys, key=itemgetter(2))[0]  # Returns largest end time
+        data_matrix = np.array()
+        return None
 
 
 class Schedule:
@@ -43,7 +48,7 @@ class Schedule:
         return T
 
     def create_schedule(self):
-        """ Create schedule based on team compositions"""
+        """Create schedule based on team compositions"""
         T = self.create_teams()
         schedule = np.zeros((self.num_robots, self.num_teams))
         teams = np.where(self.rob_in_teams[0,:] > 0)[0].astype('int')
