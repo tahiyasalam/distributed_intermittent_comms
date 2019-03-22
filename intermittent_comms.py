@@ -38,13 +38,12 @@ class Schedule:
         T = [[] for x in range(self.num_teams)]
 
         for i in range(0, self.num_teams):
-            T[i] = np.where(self.rob_in_teams[:,i] > 0)
+            T[i] = np.where(self.rob_in_teams[:, i] > 0)
             T[i] += np.ones(np.shape(T[i]))
         return T
 
     def create_schedule(self):
-        """Create schedule based on team compositions
-        return team adjacency matrix """
+        """ Create schedule based on team compositions"""
         T = self.create_teams()
         schedule = np.zeros((self.num_robots, self.num_teams))
         teams = np.where(self.rob_in_teams[0,:] > 0)[0].astype('int')
@@ -54,7 +53,7 @@ class Schedule:
         schedule[0, 0:np.shape(teams)[0]] = teams
 
         for j in range(1, self.num_robots):
-            teams = np.where(self.rob_in_teams[j,:] > 0)[0].astype('int')
+            teams = np.where(self.rob_in_teams[j, :] > 0)[0].astype('int')
             teams = teams + np.ones(np.shape(teams))
             teams = teams.astype('int')
 
@@ -64,34 +63,25 @@ class Schedule:
                 team = teams[t]
 
                 for col in range(0, self.num_teams):
-                    comp = (team == schedule[:, col])
-                    # print(col, team)
-                    # print(schedule[:, col])
-                    # print(comp)
                     if team in schedule[:, col]:
-                        # print(team)
                         schedule[j, col] = team
                         rule12 = True
                         break
-            if not rule12:
-                col = 0
-                while col <= self.num_teams and not rule3:
-                    placed_teams = np.unique(schedule[np.where(schedule[:, col] > 0), col]).astype('int')
-                    sum_t = 0
-                    # print(placed_teams)
-                    for pt in range(0, np.shape(placed_teams)[0]):
-                        pteam = placed_teams[pt].astype('int')
-                        if np.intersect1d(T[team - 1], T[pteam - 1]).size == 0:
-                            sum_t += 1
-                    if sum_t == np.shape(placed_teams)[0]:
-                        schedule[j, col] = team
-                        # print(team)
-                        rule3 = True
-                    col += 1
-                # print(j, col)
-            #
-            # print(schedule, rule12, rule3)
-        # schedule = schedule[~np.all(schedule == 0, axis=0)]
+                if not rule12:
+                    col = 0
+                    while col <= self.num_teams and not rule3:
+                        placed_teams = np.unique(schedule[np.where(schedule[:, col] > 0), col]).astype('int')
+                        sum_t = 0
+                        for pt in range(0, np.shape(placed_teams)[0]):
+                            pteam = placed_teams[pt].astype('int')
+                            if np.intersect1d(T[team - 1], T[pteam - 1]).size == 0:
+                                sum_t += 1
+                        if sum_t == np.shape(placed_teams)[0]:
+                            schedule[j, col] = team
+                            rule3 = True
+                        col += 1
+
+        schedule = schedule[:, ~np.all(schedule == 0, axis=0)]  # Remove columns full of zeros
         return schedule
 
 
