@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     S = schedule.create_schedule()
 
-    communication_period = np.shape(S)[0] # Communication schedule repeats infinitely often
+    communication_period = np.shape(S)[0]  # Communication schedule repeats infinitely often
 
     sensor_data_period = 20
     eigenvec_data_period = 40
