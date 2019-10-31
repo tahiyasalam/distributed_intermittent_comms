@@ -12,7 +12,7 @@ if __name__ == "__main__":
 
     S = schedule.create_schedule()
 
-    communication_period = np.shape(S)[0] # Communication schedule repeats infinitely often
+    communication_period = np.shape(S)[0]  # Communication schedule repeats infinitely often
 
     sensor_data_period = 20
     eigenvec_data_period = 40
@@ -28,25 +28,32 @@ if __name__ == "__main__":
         rob = Robot(r + 1, teams, S[r])
         robots.append(rob)
 
-    data_val = 1
+    num_locations = 20
+    locations = np.random.random_integers(0, 599, size=(num_locations, 2))
     while curr_time < total_time:
         # Collect and send sensing data
         for r in range(0, num_robots):
-            robots[r].add_new_data([data_val] * sensor_data_period, (curr_time, curr_time + sensor_data_period), 'sensor')
+            data_val = np.ones((num_locations, sensor_data_period))  # Test data matrix for 20 locations over duration of sensor data
+            robots[r].add_new_data(data_val, locations, (curr_time, curr_time + sensor_data_period), 'sensor')  # Set data matrices
         curr_time += sensor_data_period
+
+        locations = np.remainder(locations + 1, 600)  # Test changing locations
 
         # Create new matrix of data points, fill in sensor values
         #
         # Estimate missing values using communication protocol here
         # Collect and send eigenvector data
-        for r in range(0, num_robots):
-            robots[r].add_new_data([data_val * 3] * sensor_data_period, (curr_time, curr_time + eigenvec_data_period), 'eigen')
-        curr_time += eigenvec_data_period
+        # for r in range(0, num_robots):
+        #
+        #     robots[r].add_new_data([data_val * 3] * sensor_data_period, (curr_time, curr_time + eigenvec_data_period), 'eigen')
+        # curr_time += eigenvec_data_period
 
         # Use communication protocol here
 
         data_val += 1
 
-    for r in range(0, num_robots):
-        print(robots[r].sensor_data)
+    data_matrix_of_sensor_measurements = Robot.construct_data_matrix()  # Aggregated matrix of estimated values from robots
+
+    # Estimate missing values using gappy POD
+
 
