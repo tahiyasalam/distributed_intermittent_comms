@@ -5,14 +5,17 @@ if __name__ == "__main__":
     num_teams = 12
     num_robots = 12
 
-    #the following is an N x M matrix:
-    #the entry (i,j) is 1 if robot i belongs to team T_j and 0 otherwise
+    # the following is an N x M matrix:
+    # the entry (i,j) is 1 if robot i belongs to team T_j and 0 otherwise
     rob_in_teams = np.array([[1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0], [1, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0], [0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 1, 0, 1, 0, 0, 0, 0], [0, 1, 0, 0, 1, 0, 1, 0, 0, 0, 0, 0], [0, 0, 1, 0, 1, 0, 0, 0, 1, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0], [1, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 1, 1], [0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 1, 0], [0, 0, 0, 0, 0, 1, 0, 1, 0, 0, 1, 0]])
     schedule = Schedule(num_robots, num_teams, rob_in_teams)
 
     T = schedule.create_teams()
+    # T{m} collects the indices of the robots that belong to team Tm
 
     S = schedule.create_schedule()
+    # schedule(i,:) is the schedule of robot i. you can completely ignore the 0s
+    # in the schedules.
 
     communication_period = np.shape(S)[0]  # Communication schedule repeats infinitely often
 
