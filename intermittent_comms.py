@@ -103,11 +103,12 @@ class Schedule:
         teams = np.where(self.rob_in_teams[0,:] > 0)[0].astype('int')
         teams = teams + np.ones(np.shape(teams))
         teams = teams.astype('int')
-
+        
         schedule[0, 0:np.shape(teams)[0]] = teams
 
-        for j in range(1, self.num_robots):
+        for j in range(0, self.num_robots):
             teams = np.where(self.rob_in_teams[j, :] > 0)[0].astype('int')
+            
             teams = teams + np.ones(np.shape(teams))
             teams = teams.astype('int')
 
